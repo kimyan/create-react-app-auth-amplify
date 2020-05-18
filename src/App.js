@@ -3,8 +3,24 @@ import logo from './logo.svg';
 import './App.css';
 import { withAuthenticator } from 'aws-amplify-react'
 import Amplify, { Auth } from 'aws-amplify';
-import aws_exports from './aws-exports';
-Amplify.configure(aws_exports);
+// import aws_exports from './aws-exports';
+// Amplify.configure(aws_exports);
+
+Amplify.configure({
+    Auth: {
+         // OPTIONAL - Hosted UI configuration
+        oauth: {
+            domain: 'koyakimu-idp-test.auth.ap-northeast-1.amazoncognito.com',
+            scope: ['phone', 'email', 'profile', 'openid', 'aws.cognito.signin.user.admin'],
+            redirectSignIn: 'https://koyakimu-idp-test.auth.ap-northeast-1.amazoncognito.com/login',
+            redirectSignOut: 'https://koyakimu-idp-test.auth.ap-northeast-1.amazoncognito.com/logout',
+            responseType: 'code' // or 'token', note that REFRESH token will only be generated when the responseType is code
+        }
+    }
+});
+
+// You can get the current config object
+// const currentConfig = Auth.configure();
 
 class App extends Component {
   render() {
